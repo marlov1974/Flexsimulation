@@ -4,7 +4,7 @@ This file is generated from tracked Git files.
 
 Use it when GitHub/chat review contexts cannot enumerate repository files directly.
 
-Tracked file count: 51
+Tracked file count: 54
 
 ## Files
 
@@ -17,6 +17,9 @@ Tracked file count: 51
 - `configs/scenarios.yaml`
 - `configs/segments.yaml`
 - `docs/README.md`
+- `docs/business-case/customer-value-and-progression.md`
+- `docs/business-case/executive-playground-purpose.md`
+- `docs/business-case/fragmentation-risk.md`
 - `docs/business-case/scaling-market-results.md`
 - `docs/business-case/scenario-comparison.md`
 - `docs/business-case/value-attribution.md`
