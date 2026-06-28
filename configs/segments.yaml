@@ -1,0 +1,13 @@
+segments:
+  dual_home_ev_pv_battery:
+    description: Synthetic dual-home household with EV, cabin PV and cabin battery.
+    weight: 0.4
+  dual_home_ev_pv:
+    description: Synthetic dual-home household with EV and cabin PV.
+    weight: 0.25
+  apartment_with_cabin_ev:
+    description: Synthetic apartment or large flat household with cabin and EV.
+    weight: 0.2
+  premium_cabin:
+    description: Synthetic high-consumption cabin segment with pool or premium loads.
+    weight: 0.15
