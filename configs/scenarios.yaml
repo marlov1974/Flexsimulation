@@ -1,0 +1,11 @@
+scenarios:
+  S0_fragmented_no_coordination:
+    description: Assets operate without shared planning or portfolio optimisation.
+  S1_local_smart_optimisation:
+    description: Local household optimisation, no portfolio market optimisation.
+  S2_dual_home_integrated_optimisation:
+    description: Home, cabin and assets planned as one customer energy system.
+  S3_portfolio_virtual_battery:
+    description: Households aggregated as a risk-adjusted virtual battery portfolio.
+  S4_full_market_optimizer:
+    description: Portfolio optimised across customer value, spot, intraday, mFRR, rebound and imbalance.
