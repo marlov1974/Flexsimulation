@@ -1,8 +1,44 @@
 # Flexsimulation
 
-Source-of-truth modelling repository for simulating distributed virtual-battery capability value.
+Source-of-truth modelling repository for an interactive executive business-case simulator for distributed flexibility and virtual-battery capability value.
 
-The purpose is to quantify the incremental business value of a more integrated system compared with fragmented asset-by-asset optimisation. The simulator should help answer how much additional money is created by shared planning, baseline management, stacked optimisation, cross-asset portfolio effects, rebound scheduling and market monetisation.
+The purpose is to replace static presentation and spreadsheet-style business cases with a polished interactive page where decision makers can explore how capability choices, ownership models, optimisation scope and market integration change profitability, risk, customer value and strategic control.
+
+The intended outcome is that users discover, through interaction, that local asset-by-asset flexibility initiatives can look attractive in isolation while destroying or hiding system value. The simulator should show why shared system capabilities such as common data models, 15-minute plans, baseline management, stacked optimisation, cross-asset portfolio effects, rebound scheduling, wholesale/imbalance integration and value attribution are critical to real profitability.
+
+## Strategic problem
+
+Fragmented local flexibility initiatives can create false-positive business cases. A local initiative may show attractive gross revenue for one resource type while leaving important system effects outside the calculation boundary.
+
+Common fragmentation patterns the simulator should make visible:
+
+- EV charging solutions limited to a subset of vehicle brands or charging partners.
+- Solar solutions optimised locally with one partner.
+- Battery solutions optimised locally with another partner.
+- Flexibility bids sent to ancillary markets without integration to wholesale position management.
+- Imbalance costs hidden, ignored or attributed to another team.
+- Rebound energy treated as a side effect instead of a scheduled and traded portfolio position.
+- Assets optimised locally without connection to the household residual load profile.
+- Energy sharing treated as an administrative problem instead of a product and portfolio opportunity.
+- Partner revenue-share models optimising gross activation revenue rather than net portfolio value.
+
+The simulator should compare local/gross business-case views with integrated/net system views.
+
+## Customer value thesis
+
+A well-designed integrated system should create value for both the portfolio owner and the customer.
+
+The customer should experience the product as a growing energy system rather than a set of disconnected devices. Each new asset or capability should make the whole system better: lower cost, better use of local production, smarter charging, better comfort protection, higher flexibility bonus and a clearer path to the next upgrade.
+
+The simulator should therefore include customer value and customer progression effects, not only internal market revenue. Examples:
+
+- customer savings,
+- flexibility bonus,
+- energy-sharing value,
+- comfort and target-state protection,
+- next-best-upgrade value,
+- system maturity score,
+- retention or stickiness effect.
 
 ## Mandatory AI bootstrap
 
@@ -36,7 +72,8 @@ This repository must not contain:
 - real counterparties or business unit names,
 - real production system names,
 - real price curves or transaction extracts,
-- copied internal documents.
+- copied internal documents,
+- company-specific strategy text or company names.
 
 Use neutral vocabulary such as:
 
@@ -52,6 +89,11 @@ rebound position
 virtual battery portfolio
 market scenario
 business-case scenario
+local initiative
+system capability
+edge capability
+portfolio owner
+customer value
 ```
 
 ## Layout
@@ -62,8 +104,9 @@ requirements/ ordered capability/package work
 docs/          durable model and business-case documentation
 configs/       synthetic scenario and segment assumptions
 src/           simulator prototype source code
-tests/         unit tests and fixtures
+web/           interactive executive playground, future
 outputs/       generated outputs, gitignored except .gitkeep
+tests/         unit tests and fixtures
 ```
 
 Tracked repository paths are listed in `REPOSITORY_FILES.md`. When a change adds, removes or moves tracked files, keep `REPOSITORY_FILES.md` synchronized in the same change.
@@ -124,4 +167,4 @@ S3_portfolio_virtual_battery
 S4_full_market_optimizer
 ```
 
-The main output should be incremental value, for example SEK/customer/year and system value uplift, not only MW.
+The main output should be incremental value, for example SEK/customer/year, system value uplift, customer value uplift and strategic control, not only MW.
