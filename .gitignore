@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Local outputs
+outputs/*
+!outputs/.gitkeep
+
+# Local data and notebooks
+*.parquet
+*.csv
+*.jsonl
+*.sqlite
+.ipynb_checkpoints/
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
