@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "repo": "marlov1974/Flexsimulation",
+  "ref": "main",
+  "mandatory": true,
+  "purpose": "Read order for Flexsimulation AI and Codex sessions.",
+  "read_order": [
+    "memory/00-index.md",
+    "memory/01-project-overview.md",
+    "memory/02-design-principles.md",
+    "memory/03-capability-model.md",
+    "memory/04-business-case-model.md",
+    "memory/05-observation-boundary.md",
+    "memory/06-codex-workflow.md",
+    "requirements/README.md",
+    "requirements/packages/P0001-bootstrap-flexsimulation-repo.md"
+  ],
+  "governance": {
+    "truth_hierarchy": [
+      "implementation and generated evidence",
+      "package-run evidence",
+      "package files",
+      "requirements files",
+      "docs files",
+      "memory files",
+      "historical discussion"
+    ],
+    "rule": "When mandatory solution context is added, update this manifest if future sessions need it."
+  }
+}
