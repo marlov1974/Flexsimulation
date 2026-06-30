@@ -4,7 +4,7 @@ This file is generated from tracked Git files.
 
 Use it when GitHub/chat review contexts cannot enumerate repository files directly.
 
-Tracked file count: 54
+Tracked file count: 58
 
 ## Files
 
@@ -44,12 +44,16 @@ Tracked file count: 54
 - `pyproject.toml`
 - `requirements/README.md`
 - `requirements/package-runs/P0001/review.md`
+- `requirements/package-runs/P0002/design.md`
+- `requirements/package-runs/P0002/functions.md`
+- `requirements/package-runs/P0002/review.md`
 - `requirements/package-runs/README.md`
 - `requirements/package-runs/TEMPLATE-design.md`
 - `requirements/package-runs/TEMPLATE-findings.md`
 - `requirements/package-runs/TEMPLATE-functions.md`
 - `requirements/package-runs/TEMPLATE-review.md`
 - `requirements/packages/P0001-bootstrap-flexsimulation-repo.md`
+- `requirements/packages/P0002-synthetic-stock-and-base-load-object-generator.md`
 - `src/flexsimulation/__init__.py`
 - `src/flexsimulation/activation.py`
 - `src/flexsimulation/business_case.py`
