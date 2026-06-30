@@ -26,6 +26,28 @@ def test_base_load_objects_return_non_negative_kwh() -> None:
         assert load_object.actual_kwh(context, rng) >= 0.0
 
 
+def test_base_load_objects_use_power_first_contract() -> None:
+    context = SimulationContext(timestep=1)
+    objects = (
+        ColdApplianceObject("O1", 1, "S1", "fridge", 0.1, 0.25, 4, 0),
+        InternetObject("O2", 1, "S1", 0.02, 0.04),
+        StandbyClusterObject("O3", 1, "S1", "site", 2, 5.0, 0.05),
+        AlwaysLightObject("O4", 1, "S1", 0.75),
+        TowelRailObject("O5", 1, "S1", 0.08, 0.20),
+    )
+
+    for index, load_object in enumerate(objects):
+        rng_for_kw = Random(index)
+        rng_for_kwh = Random(index)
+        expected_kw = load_object.expected_kw(context)
+        actual_kw = load_object.actual_kw(context, rng_for_kw)
+
+        assert expected_kw >= 0.0
+        assert actual_kw >= 0.0
+        assert load_object.expected_kwh(context) == expected_kw * context.step_hours
+        assert load_object.actual_kwh(context, rng_for_kwh) == actual_kw * context.step_hours
+
+
 def test_cold_appliance_actual_varies_over_cycle() -> None:
     appliance = ColdApplianceObject("O1", 1, "S1", "freezer", 0.12, 0.25, 4, 0)
     rng = Random(1)
