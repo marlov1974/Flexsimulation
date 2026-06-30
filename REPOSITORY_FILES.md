@@ -4,7 +4,7 @@ This file is generated from tracked Git files.
 
 Use it when GitHub/chat review contexts cannot enumerate repository files directly.
 
-Tracked file count: 77
+Tracked file count: 79
 
 ## Files
 
@@ -74,6 +74,7 @@ Tracked file count: 77
 - `src/flexsimulation/planning.py`
 - `src/flexsimulation/population.py`
 - `src/flexsimulation/rebound.py`
+- `src/flexsimulation/residual_load_diagnostics.py`
 - `src/flexsimulation/simulation_time.py`
 - `src/flexsimulation/stock_generator.py`
 - `tests/test_base_load_factory.py`
@@ -84,4 +85,5 @@ Tracked file count: 77
 - `tests/test_observation_boundary.py`
 - `tests/test_population.py`
 - `tests/test_rebound.py`
+- `tests/test_residual_load_diagnostics.py`
 - `tests/test_simulation_time.py`
