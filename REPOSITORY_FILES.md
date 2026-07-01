@@ -4,7 +4,7 @@ This file is generated from tracked Git files.
 
 Use it when GitHub/chat review contexts cannot enumerate repository files directly.
 
-Tracked file count: 83
+Tracked file count: 88
 
 ## Files
 
@@ -43,17 +43,22 @@ Tracked file count: 83
 - `outputs/.gitkeep`
 - `pyproject.toml`
 - `requirements/README.md`
+- `requirements/package-runs/P0001/findings.md`
 - `requirements/package-runs/P0001/review.md`
 - `requirements/package-runs/P0002/design.md`
+- `requirements/package-runs/P0002/findings.md`
 - `requirements/package-runs/P0002/functions.md`
 - `requirements/package-runs/P0002/review.md`
 - `requirements/package-runs/P0003/design.md`
+- `requirements/package-runs/P0003/findings.md`
 - `requirements/package-runs/P0003/functions.md`
 - `requirements/package-runs/P0003/review.md`
 - `requirements/package-runs/P0004/design.md`
+- `requirements/package-runs/P0004/findings.md`
 - `requirements/package-runs/P0004/functions.md`
 - `requirements/package-runs/P0004/review.md`
 - `requirements/package-runs/P0005/design.md`
+- `requirements/package-runs/P0005/findings.md`
 - `requirements/package-runs/P0005/functions.md`
 - `requirements/package-runs/P0005/review.md`
 - `requirements/package-runs/README.md`
