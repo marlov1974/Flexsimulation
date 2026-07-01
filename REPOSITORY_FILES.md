@@ -4,7 +4,7 @@ This file is generated from tracked Git files.
 
 Use it when GitHub/chat review contexts cannot enumerate repository files directly.
 
-Tracked file count: 88
+Tracked file count: 97
 
 ## Files
 
@@ -78,6 +78,9 @@ Tracked file count: 88
 - `src/flexsimulation/base_load_timeseries.py`
 - `src/flexsimulation/business_case.py`
 - `src/flexsimulation/cli.py`
+- `src/flexsimulation/heating_demand.py`
+- `src/flexsimulation/heating_load_factory.py`
+- `src/flexsimulation/heating_load_objects.py`
 - `src/flexsimulation/models.py`
 - `src/flexsimulation/observations.py`
 - `src/flexsimulation/planning.py`
@@ -86,13 +89,19 @@ Tracked file count: 88
 - `src/flexsimulation/residual_load_diagnostics.py`
 - `src/flexsimulation/simulation_time.py`
 - `src/flexsimulation/stock_generator.py`
+- `src/flexsimulation/temperature.py`
 - `tests/test_base_load_factory.py`
 - `tests/test_base_load_objects.py`
 - `tests/test_base_load_timeseries.py`
 - `tests/test_baseline_activation.py`
 - `tests/test_business_case.py`
+- `tests/test_heating_demand.py`
+- `tests/test_heating_load_factory.py`
+- `tests/test_heating_load_objects.py`
+- `tests/test_heating_timeseries_integration.py`
 - `tests/test_observation_boundary.py`
 - `tests/test_population.py`
 - `tests/test_rebound.py`
 - `tests/test_residual_load_diagnostics.py`
 - `tests/test_simulation_time.py`
+- `tests/test_temperature.py`

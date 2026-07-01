@@ -10,7 +10,8 @@ Heating objects require outdoor temperature in the simulation context. The weath
 
 ## Bugs or mismatches found
 
-None yet; package is requirements-only at this point.
+- P0003 originally had no outdoor-temperature channel in `SimulationContext`; P0005 extended it.
+- P0003 vectorized normal path originally only recognised P0002 base-load objects; P0005 added explicit heating-object handling.
 
 ## Decisions made
 
@@ -22,7 +23,9 @@ Only one primary uncontrolled heating object per house/cabin in P0005. Hybrid sy
 
 ## Evidence
 
-See `requirements/packages/P0005-uncontrolled-heating-load-objects.md`.
+- `.venv/bin/python -m pytest` passed with 45 tests.
+- `.venv/bin/python -m ruff check .` passed.
+- Default 100-household full-year heating simulation increased annual portfolio load from 286.314 MWh to 1,619.263 MWh and passed P0004 quality checks.
 
 ## Follow-up candidates
 

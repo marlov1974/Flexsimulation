@@ -18,9 +18,11 @@ from .base_load_objects import (
     StandbyClusterObject,
     TowelRailObject,
 )
+from .heating_load_objects import HEATING_LOAD_OBJECT_TYPES, HeatingLoadObject
 from .population import Household, StockGenerationConfig
 from .simulation_time import create_2025_time_index, create_simulation_contexts, stable_seed
 from .stock_generator import generate_synthetic_stock
+from .temperature import TemperatureProvider
 
 
 @dataclass(frozen=True)
@@ -33,6 +35,7 @@ class BaseLoadTimeSeriesConfig:
     time_index: tuple[datetime, ...] | None = None
     stock_config: StockGenerationConfig | None = None
     save_object_level: bool = False
+    temperature_provider: TemperatureProvider | None = None
 
 
 @dataclass(frozen=True)
@@ -61,6 +64,13 @@ def simulate_base_load_timeseries(
         step_minutes=resolved_config.step_minutes
     )
     sites = tuple(site for household in resolved_households for site in household.sites)
+    contains_heating = _contains_heating_objects(sites)
+    if contains_heating and resolved_config.temperature_provider is None:
+        raise ValueError("temperature_provider is required when heating load objects are present")
+    outdoor_temp_by_timestep = _outdoor_temp_by_timestep(
+        timestamps,
+        resolved_config.temperature_provider,
+    )
 
     if not resolved_config.save_object_level:
         site = _simulate_site_frames(
@@ -68,6 +78,7 @@ def simulate_base_load_timeseries(
             timestamps=timestamps,
             step_hours=resolved_config.step_minutes / 60.0,
             simulation_seed=resolved_config.simulation_seed,
+            outdoor_temp_by_timestep=outdoor_temp_by_timestep,
         )
         household = _aggregate_household(site)
         portfolio = _aggregate_portfolio(site)
@@ -83,7 +94,11 @@ def simulate_base_load_timeseries(
             object_level=None,
         )
 
-    contexts = create_simulation_contexts(timestamps, step_minutes=resolved_config.step_minutes)
+    contexts = create_simulation_contexts(
+        timestamps,
+        step_minutes=resolved_config.step_minutes,
+        outdoor_temp_by_timestep=outdoor_temp_by_timestep,
+    )
 
     site_rows: list[dict[str, object]] = []
     household_rows: list[dict[str, object]] = []
@@ -187,6 +202,7 @@ def _simulate_site_frames(
     timestamps: tuple[datetime, ...],
     step_hours: float,
     simulation_seed: int,
+    outdoor_temp_by_timestep: np.ndarray | None,
 ) -> pd.DataFrame:
     timestep = np.arange(len(timestamps), dtype=np.int64)
     frames: list[pd.DataFrame] = []
@@ -196,6 +212,7 @@ def _simulate_site_frames(
             site.load_objects,
             timestep,
             simulation_seed,
+            outdoor_temp_by_timestep,
         )
         forecast_error_kw = actual_kw - expected_kw
         frames.append(
@@ -238,9 +255,10 @@ def _simulate_site_frames(
 
 
 def _site_power_arrays(
-    load_objects: tuple[BaseLoadObject, ...],
+    load_objects: tuple[BaseLoadObject | HeatingLoadObject, ...],
     timestep: np.ndarray,
     simulation_seed: int,
+    outdoor_temp_by_timestep: np.ndarray | None,
 ) -> tuple[np.ndarray, np.ndarray]:
     expected_kw = np.zeros(len(timestep), dtype=float)
     actual_kw = np.zeros(len(timestep), dtype=float)
@@ -250,6 +268,7 @@ def _site_power_arrays(
             load_object,
             timestep,
             simulation_seed,
+            outdoor_temp_by_timestep,
         )
         expected_kw += object_expected_kw
         actual_kw += object_actual_kw
@@ -258,11 +277,17 @@ def _site_power_arrays(
 
 
 def _object_power_arrays(
-    load_object: BaseLoadObject,
+    load_object: BaseLoadObject | HeatingLoadObject,
     timestep: np.ndarray,
     simulation_seed: int,
+    outdoor_temp_by_timestep: np.ndarray | None,
 ) -> tuple[np.ndarray, np.ndarray]:
     object_seed = stable_seed(simulation_seed, 0, load_object.object_id)
+
+    if isinstance(load_object, HEATING_LOAD_OBJECT_TYPES):
+        if outdoor_temp_by_timestep is None:
+            raise ValueError("outdoor_temp_c is required for uncontrolled heating load objects")
+        return _heating_power_arrays(load_object, timestep, simulation_seed, outdoor_temp_by_timestep)
 
     if isinstance(load_object, ColdApplianceObject):
         expected_kw = np.full(len(timestep), max(0.0, load_object.rated_kw * load_object.duty_cycle))
@@ -307,6 +332,32 @@ def _object_power_arrays(
     raise TypeError(f"unsupported base-load object type: {type(load_object).__name__}")
 
 
+def _heating_power_arrays(
+    load_object: HeatingLoadObject,
+    timestep: np.ndarray,
+    simulation_seed: int,
+    outdoor_temp_by_timestep: np.ndarray,
+) -> tuple[np.ndarray, np.ndarray]:
+    contexts = (
+        SimulationContext(timestep=int(step), outdoor_temp_c=float(outdoor_temp))
+        for step, outdoor_temp in zip(timestep, outdoor_temp_by_timestep, strict=True)
+    )
+    expected_kw = np.array([load_object.expected_kw(context) for context in contexts], dtype=float)
+    object_seed = stable_seed(simulation_seed, 0, load_object.object_id)
+    if hasattr(load_object, "effective_noise_std_pct"):
+        noise_std_pct = np.array(
+            [
+                load_object.effective_noise_std_pct(float(outdoor_temp))
+                for outdoor_temp in outdoor_temp_by_timestep
+            ],
+            dtype=float,
+        )
+    else:
+        noise_std_pct = getattr(load_object, "noise_std_pct", 0.0)
+    actual_kw = np.maximum(0.0, expected_kw * _normal_multipliers(object_seed, timestep, noise_std_pct))
+    return expected_kw, actual_kw
+
+
 def _near_constant_arrays(
     kw: float,
     noise_std_pct: float,
@@ -346,6 +397,26 @@ def _splitmix64(values: np.ndarray) -> np.ndarray:
     values = (values ^ (values >> np.uint64(30))) * np.uint64(0xBF58476D1CE4E5B9)
     values = (values ^ (values >> np.uint64(27))) * np.uint64(0x94D049BB133111EB)
     return values ^ (values >> np.uint64(31))
+
+
+def _contains_heating_objects(sites: tuple[object, ...]) -> bool:
+    return any(
+        isinstance(load_object, HEATING_LOAD_OBJECT_TYPES)
+        for site in sites
+        for load_object in site.load_objects
+    )
+
+
+def _outdoor_temp_by_timestep(
+    timestamps: tuple[datetime, ...],
+    temperature_provider: TemperatureProvider | None,
+) -> np.ndarray | None:
+    if temperature_provider is None:
+        return None
+    return np.array(
+        [temperature_provider.outdoor_temp_c(timestamp) for timestamp in timestamps],
+        dtype=float,
+    )
 
 
 def _aggregate_household(site: pd.DataFrame) -> pd.DataFrame:

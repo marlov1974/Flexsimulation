@@ -18,6 +18,7 @@ class SimulationContext:
     timestep: int
     timestamp: datetime | None = None
     step_hours: float = 0.25
+    outdoor_temp_c: float | None = None
 
     @property
     def resolved_timestamp(self) -> datetime:
