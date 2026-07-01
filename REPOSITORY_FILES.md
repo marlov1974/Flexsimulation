@@ -4,7 +4,7 @@ This file is generated from tracked Git files.
 
 Use it when GitHub/chat review contexts cannot enumerate repository files directly.
 
-Tracked file count: 79
+Tracked file count: 83
 
 ## Files
 
@@ -53,6 +53,9 @@ Tracked file count: 79
 - `requirements/package-runs/P0004/design.md`
 - `requirements/package-runs/P0004/functions.md`
 - `requirements/package-runs/P0004/review.md`
+- `requirements/package-runs/P0005/design.md`
+- `requirements/package-runs/P0005/functions.md`
+- `requirements/package-runs/P0005/review.md`
 - `requirements/package-runs/README.md`
 - `requirements/package-runs/TEMPLATE-design.md`
 - `requirements/package-runs/TEMPLATE-findings.md`
@@ -62,6 +65,7 @@ Tracked file count: 79
 - `requirements/packages/P0002-synthetic-stock-and-base-load-object-generator.md`
 - `requirements/packages/P0003-base-load-timeseries-simulator.md`
 - `requirements/packages/P0004-residual-load-portfolio-diagnostics.md`
+- `requirements/packages/P0005-uncontrolled-heating-load-objects.md`
 - `src/flexsimulation/__init__.py`
 - `src/flexsimulation/activation.py`
 - `src/flexsimulation/base_load_factory.py`
